@@ -1,0 +1,32 @@
+Features:
+I: Allow user to search products in database & add wanted results to cart
+-User should be able to browse an hierarchy of activities displaying items:
+      Activity1: main page with  listoflists, i.e.: categories.
+      Activity2: list of category items
+      Activity3: item details
+
+"As a user, I can choose from a list of categories on the main page to browse a list of items of the chosen category. "
+
+"As a user, I can click an item in a category listing to bring its description up"
+      
+II: User should be able to use a searchbar to query the store for items 
+"As a user, I can search the store inventory database usingh a specific query in a searchbar to check if the store has what I want."
+
+III: Allow user to add/remove/modify products in a shopping cart
+-cart will be a singleton 
+-user can increase/decrease/remove items in cart
+"As a user, I can add items to my shopping cart"
+"As a user, I can change the quantity of items in my shopping cart, either by increasing the amount of items in my cart, or by decreasing it, or by entirely removing an entry." 
+
+Bonus-ish
+-create a class for a ShopItem/ItemListing/... maybe call it  Product?
+-class will have member variables for title, description, price, boolean instock.
+-all objects of this class will be associated with a product image
+-all objects and their images will be represented as rows in a database called someting like "inventory.db"
+-member methods will be getters, but probably not setters... customer is not always right. 
+
+maybe:
+recyclerview elements will represent a given row of inventory items including image, title, maybe description if i can make it look nice, and someting to indicate it's in stock. 
+
+
+
