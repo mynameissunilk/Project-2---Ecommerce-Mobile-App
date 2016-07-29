@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/lightgray"
+    tools:context="sunil.project2.DetailActivity">
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:background="@drawable/bear"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:elevation="10dp"/>
+
+    <TextView
+        android:id="@+id/textview_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:text="Title"
+        android:padding="10dp"
+        android:layout_below="@id/imageview"
+        />
+
+    <TextView
+        android:id="@+id/textview_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:padding="4dp"
+        android:text="Pet description goes here"
+        android:layout_below="@id/textview_title"
+        />
+
+    <TextView
+        android:id="@+id/textview_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:text="Price goes here"
+        android:layout_alignRight="@id/textview_title"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/imageview"
+        />
+
+    <TextView
+        android:id="@+id/textview_stock"
+        android:text="Stock Goes Here"
+        android:textStyle="italic"
+        android:padding="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_price"
+        android:layout_alignParentRight="true"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_menu_add" />
+
+</RelativeLayout>

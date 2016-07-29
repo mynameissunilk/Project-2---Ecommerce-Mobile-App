@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +13,9 @@ import java.util.List;
  */
 public class StoreViewAdapter extends RecyclerView.Adapter<StoreViewHolder> {
 
-    List<Product> productList;
+    ArrayList<Product> productList;
 
-    public StoreViewAdapter(final List<Product> plist){
+    public StoreViewAdapter(final ArrayList<Product> plist){
         productList = plist;
     }
 
@@ -30,12 +31,17 @@ public class StoreViewAdapter extends RecyclerView.Adapter<StoreViewHolder> {
 
     @Override
     public void onBindViewHolder(StoreViewHolder holder, int position) {
+
         Product product = productList.get(position);
-        holder.animalview.setImageResource(product.getImgID());
+
+        //need to pass this to getresources
+        product.getItemName()
+
+        //holder.animalview.setImageResource(product());
         holder.titleview.setText(product.getItemName());
         holder.descview.setText(product.getDescription());
-        holder.priceview.setText((int) product.getItemPrice());
-        holder.stockview.setText(product.getStock());
+        //holder.priceview.setText(product.getItemPrice());
+        holder.stockview.setText((int)product.getStock());
     }
 
     @Override
@@ -43,3 +49,12 @@ public class StoreViewAdapter extends RecyclerView.Adapter<StoreViewHolder> {
         return productList.size();
     }
 }
+
+
+
+
+
+
+
+//int resId = context.getResources().getIdentifier("picture1","drawable",context.getPackageName());
+//image.setImageResource(resId);;

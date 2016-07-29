@@ -15,6 +15,7 @@ public class Incidents {
         location = l;
         ownerStatus = os;
         fatal = f;
+
     }
 
     public String getOwnerStatus() {return ownerStatus;}

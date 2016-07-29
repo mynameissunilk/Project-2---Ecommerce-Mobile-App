@@ -34,20 +34,24 @@ public class Schemas {
         public static final String INC_TABLE_NAME="Incidents";
         public static final String INC_REPORT="report";
         public static final String INC_LOCATION="location";
-        public static final String INC_FATAL="fatalities";
         public static final String INC_OWNER="owner_status"; //killed,arrested,wounded,mia
+        public static final String INC_FATAL="fatalities";
 
         public static final String INC_CREATE_TABLE=
                 "CREATE TABLE "+Incidents.INC_TABLE_NAME+" ("+
                         Incidents._ID+" INTEGER,"+
                         Incidents.INC_REPORT+" TEXT,"+
                         Incidents.INC_LOCATION+" TEXT,"+
-                        Incidents.INC_FATAL+" TEXT,"+
                         Incidents.INC_OWNER+" TEXT,"+
+                        Incidents.INC_FATAL+" TEXT,"+
                         "FOREIGN KEY("+Incidents._ID+") REFERENCES "+Inventory.INV_TABLE_NAME+"("+Inventory._ID+"));";
 
         public static final String INC_DELETE_TABLE=
                         "DROP TABLE IF EXISTS"+Incidents.INC_TABLE_NAME;
+
+    }
+    /** I don't really want to make a table for my cart, but whatever **/
+    public static abstract class Cart implements BaseColumns{
 
     }
 }
