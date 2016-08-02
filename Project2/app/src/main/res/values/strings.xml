@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Best Price Exotic Pet Outlet</string>
+    <string name="BearName">North American Brown Bear</string>
+    <string name="BearDesc"></string>
 </resources>

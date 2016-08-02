@@ -29,7 +29,8 @@ public class Schemas {
         public static final String INV_DELETE_TABLE=
                 "DROP TABLE IF EXISTS "+Inventory.INV_TABLE_NAME;
     }
-    /** Incident Table, a-la "When Animals Attack" **/
+
+    /*    * Incident Table, a-la "When Animals Attack" *
     public static abstract class Incidents implements BaseColumns{
         public static final String INC_TABLE_NAME="Incidents";
         public static final String INC_REPORT="report";
@@ -49,9 +50,20 @@ public class Schemas {
         public static final String INC_DELETE_TABLE=
                         "DROP TABLE IF EXISTS"+Incidents.INC_TABLE_NAME;
 
-    }
-    /** I don't really want to make a table for my cart, but whatever **/
-    public static abstract class Cart implements BaseColumns{
+    }*/
 
-    }
+    /** I don't really want to make a table for my cart, but whatever **/
+    /*public static abstract class Cart implements BaseColumns{
+        public static final String CART_TABLE_NAME="cart";
+        public static final String CART_ITEM="item";
+        public static final String CART_PRICE="price";
+        public static final String CART_QUANT="quantity";
+
+        public static final String CREATE_CART_TABLE=
+                "CREATE TABLE "+Cart.CART_TABLE_NAME+" ("+
+                        Cart._ID+","+
+                        Cart.CART_ITEM+" TEXT,"+
+                        Cart.CART_PRICE+" INT."+
+                        Cart.CART_QUANT+" INT,"+
+    }*/
 }

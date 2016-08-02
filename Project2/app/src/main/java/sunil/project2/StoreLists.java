@@ -1,16 +1,19 @@
 package sunil.project2;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import sunil.project2.Products.Product;
 
 /**
  * Created by sunil on 7/26/16.
  */
+
+ /** Singleton class for inventory & cart **/
 public class StoreLists {
     private static StoreLists sInstance = null;
 
     private ArrayList<Product> mInventoryList = new ArrayList<>();
-    private ArrayList<Incidents>mIncidentsList = new ArrayList<>();
+
     private ArrayList<Product>cart = new ArrayList<>();
 
     public static StoreLists getInstance(){
@@ -27,18 +30,12 @@ public class StoreLists {
         mInventoryList.add(prod);
     }
 
-    public void addToIncidents(Incidents in){
-        mIncidentsList.add(in);
-    }
-
     public ArrayList<Product> getInventoryList(){
         return mInventoryList;
     }
 
-    public ArrayList<Incidents> getIncidentsList(){
-        return mIncidentsList;
-    }
+     public void addToCart(Product prod){cart.add(prod);}
 
-    public int getInventorySize(){return mInventoryList.size();}
+     public ArrayList<Product>getCart(){return cart;}
 
 }

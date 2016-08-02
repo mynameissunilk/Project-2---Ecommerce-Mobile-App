@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import sunil.project2.Products.Product;
 
 /**
  * Created by sunil on 7/26/16.
@@ -36,45 +37,20 @@ public class StoreDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(Schemas.Inventory.INV_CREATE_TABLE);
-        sqLiteDatabase.execSQL(Schemas.Incidents.INC_CREATE_TABLE);
+        //sqLiteDatabase.execSQL(Schemas.Incidents.INC_CREATE_TABLE);
         // consider joining with SQLiteQueryBuilder instead of in INC_CREATE_TABLE
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(Schemas.Inventory.INV_DELETE_TABLE);
-        sqLiteDatabase.execSQL((Schemas.Incidents.INC_DELETE_TABLE));
+        //sqLiteDatabase.execSQL((Schemas.Incidents.INC_DELETE_TABLE));
         onCreate(sqLiteDatabase);
     }
 
     // Inventory Projection: _ID, NAME, DESC, PRICE, QUANTITY
     String[] invprojection = new String[]{Schemas.Inventory._ID, Schemas.Inventory.ITEM_NAME,Schemas.Inventory.ITEM_DESC,Schemas.Inventory.ITEM_PRICE,Schemas.Inventory.ITEM_QUANT, Schemas.Inventory.ITEM_THUMB};
 
-    /**
-    public String doSomething(){
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(Schemas.Inventory.INV_TABLE_NAME,
-                invprojection,
-                Schemas.Inventory.ITEM_NAME,
-                null,
-                null,
-                null,
-                null);
-        String testoutput="";
-
-        cursor.moveToFirst();
-        if(cursor.moveToFirst()){
-            while(!cursor.isAfterLast()){
-                testoutput+=cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_NAME))+
-                cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_DESC))+
-                cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_PRICE))+
-                cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_QUANT));
-                cursor.moveToNext();
-            }
-        }
-        return testoutput;
-    }
-    **/
 
     // use a rawquery to check if a table is empty... well this doesn't work anyways so @#$%
     public boolean checkPopulated(String tablequery){
@@ -90,6 +66,19 @@ public class StoreDBHelper extends SQLiteOpenHelper {
                 invprojection,
                 Schemas.Inventory.ITEM_NAME,
                 null,null,null,null);
+        cursor.moveToFirst();
+        return cursor;
+    }
+
+    public Cursor getRowFromName(String name){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(
+                Schemas.Inventory.INV_TABLE_NAME,
+                invprojection,
+                Schemas.Inventory.ITEM_NAME+" =?",
+                new String[]{name},
+                null,null,null);
+
         cursor.moveToFirst();
         return cursor;
     }
@@ -118,47 +107,25 @@ public class StoreDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertIncidentRow(Incidents in){
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(Schemas.Incidents.INC_REPORT,in.getReport());
-        cv.put(Schemas.Incidents.INC_LOCATION,in.getLocation());
-        cv.put(Schemas.Incidents.INC_OWNER,in.getOwnerStatus());
-        cv.put(Schemas.Incidents.INC_FATAL,in.isFatal());
-        db.insert(Schemas.Incidents.INC_TABLE_NAME,null,cv);
-    }
-
-    public void insertIncidentList(ArrayList<Incidents> list){
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        for(int i = 0; i <list.size(); i++){
-            values.put(Schemas.Incidents.INC_REPORT,list.get(i).getReport());
-            values.put(Schemas.Incidents.INC_LOCATION,list.get(i).getLocation());
-            values.put(Schemas.Incidents.INC_OWNER,list.get(i).getOwnerStatus());
-            values.put(Schemas.Incidents.INC_FATAL,list.get(i).isFatal());
-            db.insert(Schemas.Incidents.INC_TABLE_NAME,null,values);
-        }
-    }
 
     public Cursor createInventoryFromTable(){
         ArrayList<Product> listFromTable;
         StoreLists storeinvs = StoreLists.getInstance();
         SQLiteDatabase  db = getReadableDatabase();
 
-        // get all columns, to be passed to mainactivity and written into objects
+        // get values from tables to create a product object
         Cursor cursor = db.query(Schemas.Inventory.INV_TABLE_NAME,
                 invprojection, null,null,null,null,null);
 
         cursor.moveToFirst();
         if(cursor.moveToFirst()){
             while(!cursor.isAfterLast()){
-
                 String name = cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_NAME));
                 String desc = cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_DESC));
-                double price = cursor.getDouble(cursor.getColumnIndex(Schemas.Inventory.ITEM_PRICE));
-                int stockno = cursor.getInt(cursor.getColumnIndex(Schemas.Inventory.ITEM_QUANT));
-                int imgid = cursor.getInt(cursor.getColumnIndex(Schemas.Inventory.ITEM_THUMB));
-                storeinvs.getInstance().addToInventory(new Product(name,desc,price,true,stockno,imgid));
+                String price = cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_PRICE));
+                String stockno = cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_QUANT));
+                String imgid = cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_THUMB));
+                storeinvs.getInstance().addToInventory(new Product(name,desc,price,stockno,imgid));
                 cursor.moveToNext();
             }
         }
