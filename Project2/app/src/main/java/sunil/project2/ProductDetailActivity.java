@@ -18,7 +18,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     TextView titleview,detailview,stockview,priceview;
     ImageView imageview;
-    View button;
+    Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +34,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         button = (Button)findViewById(R.id.button_detailactivity);
 
         // get the helper in this activity
-        StoreDBHelper helper = StoreDBHelper.getInstance(ProductDetailActivity.this);
+         StoreDBHelper helper = StoreDBHelper.getInstance(ProductDetailActivity.this);
 
-        // query the db by name to return all of its columns
+        // get the name that we mapped in the mainactivity intent
+        // query the db by name to return all of its columns/info
         String name = getIntent().getStringExtra("ITEM_NAME");
-        Cursor cursor = helper.getRowFromName(name);
+        final Cursor cursor = helper.getRowFromName(name);
 
         // get images, format price with commas...
         Context context = imageview.getContext();
@@ -45,27 +47,22 @@ public class ProductDetailActivity extends AppCompatActivity {
         double dprice = Double.parseDouble(cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_PRICE)));
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-        // store the cursor queries so they can be used to add to the cart
-
-
+        // get our info to the widgets
         imageview.setImageResource(imgrsc);
         titleview.setText(cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_NAME)));
         detailview.setText(cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_DESC)));
         stockview.setText(cursor.getString(cursor.getColumnIndex(Schemas.Inventory.ITEM_QUANT)));
         priceview.setText("$"+formatter.format(dprice));
-        cursor.close();
+        //cursor.close();
 
+        // add to cart button
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(ProductDetailActivity.this,"Added to Cart",Toast.LENGTH_SHORT).show();
-
-                // wow, will use a hashmap instead of arraylist next time silly me...
-                //StoreLists.getInstance().addToCart(new Product())
-                //StoreLists.getInstance().addToCart();
+                StoreDBHelper.getInstance(ProductDetailActivity.this).addToCartByCursor(cursor);
             }
         });
-
 
     }
 }

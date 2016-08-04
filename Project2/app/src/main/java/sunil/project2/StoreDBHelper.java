@@ -18,7 +18,7 @@ public class StoreDBHelper extends SQLiteOpenHelper {
 
 
     public static final String DB_NAME = "Illicit Animal Exchange";
-    public static final int DB_VER = 1;
+    public static final int DB_VER = 2;
 
     /** Singleton Stuff **/
     private static StoreDBHelper sInstance;
@@ -37,20 +37,21 @@ public class StoreDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(Schemas.Inventory.INV_CREATE_TABLE);
-        //sqLiteDatabase.execSQL(Schemas.Incidents.INC_CREATE_TABLE);
+        sqLiteDatabase.execSQL(Schemas.Cart.CREATE_CART_TABLE);
         // consider joining with SQLiteQueryBuilder instead of in INC_CREATE_TABLE
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(Schemas.Inventory.INV_DELETE_TABLE);
-        //sqLiteDatabase.execSQL((Schemas.Incidents.INC_DELETE_TABLE));
+        sqLiteDatabase.execSQL(Schemas.Cart.CART_DELETE_TABLE);
         onCreate(sqLiteDatabase);
     }
 
-    // Inventory Projection: _ID, NAME, DESC, PRICE, QUANTITY
+    // Inventory Projection: _ID, NAME, DESC, PRICE, QUANTITY, IMGID
     String[] invprojection = new String[]{Schemas.Inventory._ID, Schemas.Inventory.ITEM_NAME,Schemas.Inventory.ITEM_DESC,Schemas.Inventory.ITEM_PRICE,Schemas.Inventory.ITEM_QUANT, Schemas.Inventory.ITEM_THUMB};
-
+    // Projection for cart: NAME, PRICE, QUANTITY
+    String[] cartprojection = new String[]{Schemas.Inventory.ITEM_NAME, Schemas.Inventory.ITEM_PRICE, Schemas.Inventory.ITEM_QUANT};
 
     // use a rawquery to check if a table is empty... well this doesn't work anyways so @#$%
     public boolean checkPopulated(String tablequery){
@@ -60,6 +61,7 @@ public class StoreDBHelper extends SQLiteOpenHelper {
         else return true;
     }
 
+    // SELECT all cols FROM Table
     public Cursor getallInventory(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(Schemas.Inventory.INV_TABLE_NAME,
@@ -69,7 +71,7 @@ public class StoreDBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         return cursor;
     }
-
+    // SELECT all cols FROM table WHERE col_name LIKE query
     public Cursor getRowFromName(String name){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(
@@ -78,11 +80,26 @@ public class StoreDBHelper extends SQLiteOpenHelper {
                 Schemas.Inventory.ITEM_NAME+" =?",
                 new String[]{name},
                 null,null,null);
-
         cursor.moveToFirst();
         return cursor;
     }
 
+    // Take in the cursor that called getRowFromName
+    // in ProductDetailActivity, and use it to add to cart
+    public void addToCartByCursor(Cursor c){
+        SQLiteDatabase db = getWritableDatabase();
+        c.moveToFirst();
+        ContentValues cv = new ContentValues();
+        cv.put(Schemas.Cart.CART_ITEM,c.getString(
+                c.getColumnIndex(Schemas.Inventory.ITEM_NAME)));
+        cv.put(Schemas.Cart.CART_PRICE,c.getString(
+                c.getColumnIndex(Schemas.Inventory.ITEM_PRICE)));
+        cv.put(Schemas.Cart.CART_QUANT,c.getString(
+                c.getColumnIndex(Schemas.Inventory.ITEM_QUANT)));
+        db.insert(Schemas.Cart.CART_TABLE_NAME,null,cv);
+    }
+
+    // add a Product object to the inventory table
     public void insertInventoryRow(Product p){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -94,6 +111,7 @@ public class StoreDBHelper extends SQLiteOpenHelper {
         db.insert(Schemas.Inventory.INV_TABLE_NAME,null,cv);
     }
 
+    // add an ArrayList of Products to the inventory table
     public void insertInventoryList(ArrayList<Product> list){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -108,6 +126,8 @@ public class StoreDBHelper extends SQLiteOpenHelper {
     }
 
 
+    // create an inventory object from an inventory row
+    // incomplete, and unnecessary!
     public Cursor createInventoryFromTable(){
         ArrayList<Product> listFromTable;
         StoreLists storeinvs = StoreLists.getInstance();

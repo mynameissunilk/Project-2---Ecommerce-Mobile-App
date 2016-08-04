@@ -52,8 +52,8 @@ public class Schemas {
 
     }*/
 
-    /** I don't really want to make a table for my cart, but whatever **/
-    /*public static abstract class Cart implements BaseColumns{
+
+    public static abstract class Cart implements BaseColumns{
         public static final String CART_TABLE_NAME="cart";
         public static final String CART_ITEM="item";
         public static final String CART_PRICE="price";
@@ -61,9 +61,13 @@ public class Schemas {
 
         public static final String CREATE_CART_TABLE=
                 "CREATE TABLE "+Cart.CART_TABLE_NAME+" ("+
-                        Cart._ID+","+
+                        Cart._ID+" INT,"+
                         Cart.CART_ITEM+" TEXT,"+
-                        Cart.CART_PRICE+" INT."+
-                        Cart.CART_QUANT+" INT,"+
-    }*/
+                        Cart.CART_PRICE+" INT,"+
+                        Cart.CART_QUANT+" INT"+
+                        ");";
+
+        public static final String CART_DELETE_TABLE=
+                "DROP TABLE IF EXISTS "+Cart.CART_TABLE_NAME;
+    }
 }

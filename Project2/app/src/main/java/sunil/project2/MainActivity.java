@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import java.util.List;
 
@@ -18,9 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Toolbar
-        //Toolbar toolbar = (Toolbar)findViewById(R.id.maintoolbar);
+        //Toolbar toolbar = (Toolbar)findViewById(R.id.mainactivity_toolbar);
         //setSupportActionBar(toolbar);
 
         //let's talk to the helper
@@ -41,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
         StoreViewAdapter adapter = new StoreViewAdapter(StoreLists.getInstance().getInventoryList());
         recyclerView.setAdapter(adapter);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menus, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     // add Inventory objects to the singleton
